@@ -24,31 +24,24 @@ use crate::huffman::HuffmanTable;
 use crate::JpegDecoder;
 
 /// Start of baseline DCT Huffman coding
-
 pub const START_OF_FRAME_BASE: u16 = 0xffc0;
 
 /// Start of another frame
-
 pub const START_OF_FRAME_EXT_SEQ: u16 = 0xffc1;
 
 /// Start of progressive DCT encoding
-
 pub const START_OF_FRAME_PROG_DCT: u16 = 0xffc2;
 
 /// Start of Lossless sequential Huffman coding
-
 pub const START_OF_FRAME_LOS_SEQ: u16 = 0xffc3;
 
 /// Start of extended sequential DCT arithmetic coding
-
 pub const START_OF_FRAME_EXT_AR: u16 = 0xffc9;
 
 /// Start of Progressive DCT arithmetic coding
-
 pub const START_OF_FRAME_PROG_DCT_AR: u16 = 0xffca;
 
 /// Start of Lossless sequential Arithmetic coding
-
 pub const START_OF_FRAME_LOS_SEQ_AR: u16 = 0xffcb;
 
 /// Undo run length encoding of coefficients by placing them in natural order
@@ -72,7 +65,6 @@ pub const UN_ZIGZAG: [usize; 64 + 16] = [
 /// Align data to a 16 byte boundary
 #[repr(align(16))]
 #[derive(Clone)]
-
 pub struct Aligned16<T: ?Sized>(pub T);
 
 impl<T> Default for Aligned16<T>
@@ -128,7 +120,6 @@ impl Default for SOFMarkers {
 
 impl SOFMarkers {
     /// Check if a certain marker is sequential DCT or not
-
     pub fn is_sequential_dct(self) -> bool {
         matches!(
             self,
@@ -139,13 +130,11 @@ impl SOFMarkers {
     }
 
     /// Check if a marker is a Lossles type or not
-
     pub fn is_lossless(self) -> bool {
         matches!(self, Self::LosslessHuffman | Self::LosslessArithmetic)
     }
 
     /// Check whether a marker is a progressive marker or not
-
     pub fn is_progressive(self) -> bool {
         matches!(
             self,
@@ -154,7 +143,6 @@ impl SOFMarkers {
     }
 
     /// Create a marker from an integer
-
     pub fn from_int(int: u16) -> Option<SOFMarkers> {
         match int {
             START_OF_FRAME_BASE => Some(Self::BaselineDct),
@@ -324,22 +312,21 @@ pub(crate) fn setup_component_params<T: ZByteReaderTrait>(
                 );
 
                 return Err(DecodeErrors::Format(msg));
-            } else {
-                warn!(
-                    "Expected {} number of components but found {}",
-                    img.input_colorspace.num_components(),
-                    img.components.len()
-                );
-                warn!("Defaulting to multisample to decode");
+            }
+            warn!(
+                "Expected {} number of components but found {}",
+                img.input_colorspace.num_components(),
+                img.components.len()
+            );
+            warn!("Defaulting to multisample to decode");
 
-                // N/B: We do not post process the color of such, treating it as multiband
-                // is the best option since I am not aware of grayscale+alpha which is the most common
-                // two band format in jpeg.
-                if !img.components.is_empty() {
-                    img.input_colorspace = ColorSpace::MultiBand(
-                        NonZeroU32::new(img.components.len() as u32).unwrap()
-                    );
-                }
+            // N/B: We do not post process the color of such, treating it as multiband
+            // is the best option since I am not aware of grayscale+alpha which is the most common
+            // two band format in jpeg.
+            if !img.components.is_empty() {
+                img.input_colorspace = ColorSpace::MultiBand(
+                    NonZeroU32::new(img.components.len() as u32).unwrap()
+                );
             }
         }
     }
