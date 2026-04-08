@@ -514,12 +514,20 @@ fn add_filters() -> (Vec<Arg>, ArgGroup) {
 fn add_image_specific_settings() -> (Vec<Arg>, ArgGroup) {
     static GROUP: &str = "Image Format Settings";
 
-    let mut args = [Arg::new("jpeg-grayscale")
-        .long("jpeg-grayscale")
-        .help("Load jpeg images as grayscale")
-        .action(ArgAction::SetTrue)
-        .help_heading(GROUP)
-        .group(GROUP)];
+    let mut args = [
+        Arg::new("jpeg-grayscale")
+            .long("jpeg-grayscale")
+            .help("Load jpeg images as grayscale")
+            .action(ArgAction::SetTrue)
+            .help_heading(GROUP)
+            .group(GROUP),
+        Arg::new("hevc-software-decode")
+            .long("hevc-software-decode")
+            .help("Use zune-heic software decoder instead of apple-videotoolbox decoder on macos")
+            .action(ArgAction::SetTrue)
+            .help_heading(GROUP)
+            .group(GROUP)
+    ];
 
     let arg_group = ArgGroup::new(GROUP)
         .args(args.iter().map(|x| x.get_id()))
