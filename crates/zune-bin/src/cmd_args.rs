@@ -294,7 +294,7 @@ fn add_operations() -> (Vec<Arg>, ArgGroup) {
             .help_heading(HELP_HEADING)
             .value_parser(value_parser!(f32))
             .group(GROUP),
-        Arg::new("stretch_contrast")
+        Arg::new("stretch-contrast")
             .long("stretch-contrast")
             .value_parser(value_parser!(f32))
             .value_names(["lower", "upper"])
