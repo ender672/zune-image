@@ -512,7 +512,7 @@ fn add_filters() -> (Vec<Arg>, ArgGroup) {
 }
 
 fn add_image_specific_settings() -> (Vec<Arg>, ArgGroup) {
-    static GROUP: &str = "Image Format Settings";
+    static GROUP: &str = "Image Decoder Knobs";
 
     let mut args = [
         Arg::new("jpeg-grayscale")
@@ -526,7 +526,14 @@ fn add_image_specific_settings() -> (Vec<Arg>, ArgGroup) {
             .help("Use zune-heic software decoder instead of apple-videotoolbox decoder on macos")
             .action(ArgAction::SetTrue)
             .help_heading(GROUP)
+            .group(GROUP),
+        Arg::new("png-ignore-crc")
+            .long("png-ignore-crc")
+            .help("Ignore CRC errors on decoding PNG images")
+            .action(ArgAction::SetTrue)
+            .help_heading(GROUP)
             .group(GROUP)
+
     ];
 
     let arg_group = ArgGroup::new(GROUP)
