@@ -15,7 +15,7 @@ use zune_image::codecs::ImageFormat;
 use crate::cmd_args::arg_parsers::{IColorSpace, IResizeMethod};
 use crate::cmd_args::help_strings::{
     AFTER_HELP, BOX_BLUR_HELP, BRIGHTEN_HELP, COLORSPACE_HELP, CROP_HELP, GAUSSIAN_BLUR_HELP,
-    THRESHOLD_HELP, TRANSPOSE_HELP
+    RESIZE_HELP, THRESHOLD_HELP, TRANSPOSE_HELP
 };
 
 pub mod arg_parsers;
@@ -312,7 +312,8 @@ fn add_operations() -> (Vec<Arg>, ArgGroup) {
             .long("resize")
             .value_names(["value"])
             .help_heading(HELP_HEADING)
-            .help("Resize an image")
+            .long_help(RESIZE_HELP)
+            .help("Resize an image (e.g., 800x600, 50%, or 50%x75%)")
             .group(GROUP),
         Arg::new("resize-method")
             .long("resize-method")
@@ -533,7 +534,6 @@ fn add_image_specific_settings() -> (Vec<Arg>, ArgGroup) {
             .action(ArgAction::SetTrue)
             .help_heading(GROUP)
             .group(GROUP)
-
     ];
 
     let arg_group = ArgGroup::new(GROUP)
